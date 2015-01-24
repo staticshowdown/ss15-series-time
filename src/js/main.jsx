@@ -1,4 +1,4 @@
 var React = require('react');
-var App = require('./components/App.react');
+var Login = require('./components/Login.react');
 
-React.render(<App />, document.body);
+React.render(<Login />, document.body);
