@@ -1,41 +1,41 @@
 var React = require('react');
 var Firebase = require('firebase');
+var Navigation = require('react-router').Navigation;
+
 var LoginButton = require('./LoginButton.react');
 var UsersStore = require('../stores/UsersStore');
 var UsersActionCreators = require('../actions/UsersActionCreators');
+var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Auth = require('../lib/Auth');
 
 var ref = new Firebase('https://ss15-series-time.firebaseio.com/');
 
 var Login = React.createClass({
+  mixins: [ UsersStateMixin, Navigation ],
+  statics: {
+    willTransitionTo: function (transition) {
+      if (Auth.user) {
+        transition.redirect('/');
+      }
+    }
+  },
+
   getInitialState: function Login__getInitialState() {
     return {
       loading: false,
-      user: UsersStore.getCurrentUser(),
     };
   },
 
-  componentDidMount: function Login__componentDidMount() {
-    this.usersStoreListener = UsersStore.addChangeListener(this.onUsersChange);
-  },
-
-  componentWillUnmount: function Login__componentWillUnmount() {
-    this.usersStoreListener.dispose();
-  },
-
-  onUsersChange: function Login__onUsersChange() {
-    this.setState({
-      user: UsersStore.getCurrentUser(),
-    });
+  shouldComponentUpdate: function Login__shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.user) {
+      this.transitionTo('/');
+      return false;
+    } else {
+      return true;
+    }
   },
 
   render: function Login__render() {
-    var user;
-    if (user = this.state.user) {
-      var name = user[user.provider].displayName;
-      return <button type="button" onClick={this._unauth}>Logout ({name})</button>;
-    }
-
     var loginButtons = Object.keys(Auth.providers).map(function (key) {
         return (
           <LoginButton
@@ -66,11 +66,6 @@ var Login = React.createClass({
     }).done(function(data){
       UsersActionCreators.auth(data);
     });
-  },
-  _unauth: function Login___unauth(e) {
-    e.preventDefault();
-    Auth.logout();
-    UsersActionCreators.auth(null);
   }
 });
 

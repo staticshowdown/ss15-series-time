@@ -5,7 +5,7 @@ var UsersStateMixin = Marty.createStateMixin({
   listenTo: UsersStore,
   getState: function () {
     return {
-      UsersInfo: UsersStore.getUsersInfo()
+      user: UsersStore.getCurrentUser()
     };
   }
 });
