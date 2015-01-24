@@ -14,6 +14,7 @@ var Auth = {
   logout: function Auth__logout() {
     ref.unauth();
     Auth.user = null;
+    return Promise.resolve(null);
   },
 
   login: function Auth__login(provider) {
