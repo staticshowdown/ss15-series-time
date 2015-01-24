@@ -1,0 +1,28 @@
+{
+  "name": "ss15-series-time",
+  "version": "0.0.1",
+  "description": "",
+  "dependencies": {
+    "react": "^0.12.2"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "react-hot-loader": "^1.1.1",
+    "webpack": "^1.5.3",
+    "webpack-dev-server": "^1.7.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "webpack-dev-server": "webpack-dev-server --hot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/staticshowdown/ss15-series-time"
+  },
+  "author": "Team Series Time",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/staticshowdown/ss15-series-time/issues"
+  },
+  "homepage": "https://github.com/staticshowdown/ss15-series-time"
+}
