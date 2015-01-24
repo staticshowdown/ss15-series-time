@@ -1,21 +1,48 @@
 var React = require('react');
+var Firebase = require('firebase');
 var LoginButton = require('./LoginButton.react');
+var UsersStore = require('../stores/UsersStore');
+var Auth = require('../lib/Auth');
 
-var buttons = {
-  facebook: 'Facebook',
-  google: 'Google+',
-  github: 'Github',
-  twitter: 'Twitter'
-};
+var ref = new Firebase('https://ss15-series-time.firebaseio.com/');
 
 var Login = React.createClass({
+  getInitialState: function Login__getInitialState() {
+    return {
+      loading: false,
+      user: UsersStore.getCurrentUser(),
+    };
+  },
+
+  componentDidMount: function Login__componentDidMount() {
+    this.usersStoreListener = UsersStore.addChangeListener(this.onUsersChange);
+  },
+
+  componentWillUnmount: function Login__componentWillUnmount() {
+    this.usersStoreListener.dispose();
+  },
+
+  onUsersChange: function Login__onUsersChange() {
+    console.log('change');
+    this.setState({
+      user: UsersStore.getCurrentUser(),
+    });
+  },
+
   render: function Login__render() {
-    var loginButtons = Object.keys(buttons).map(function (key) {
+    var user;
+    console.log('render', this.state.user.result, this.state.user);
+    if (user = this.state.user.result) {
+      var name = user[user.provider].displayName;
+      return <button type="button" onClick={this._unauth}>Logout ({name})</button>;
+    }
+
+    var loginButtons = Object.keys(Auth.providers).map(function (key) {
         return (
           <LoginButton
             key={ key }
             provider={ key }
-            name={ buttons[key] }
+            name={ Auth.providers[key] }
             onClick={ this._auth }/>
         );
     }, this);
@@ -27,7 +54,21 @@ var Login = React.createClass({
     );
   },
   _auth: function Login___auth(provider) {
-    console.log('Log in with %s', provider);
+    if (this.state.loading) {
+      return;
+    }
+
+    var component = this;
+
+    Auth.login(provider).finally(function(){
+      component.setState({ loading: false });
+    }).catch(function(err){
+      console.error(err);
+    });
+  },
+  _unauth: function Login___unauth(e) {
+    e.preventDefault();
+    Auth.logout();
   }
 });
 
