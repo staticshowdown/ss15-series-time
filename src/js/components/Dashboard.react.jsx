@@ -5,6 +5,7 @@ var Auth = require('../lib/Auth');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Facebook = require('../lib/api/Facebook');
+var FriendList = require('./FriendList.react');
 
 var Dashboard = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
@@ -25,13 +26,14 @@ var Dashboard = React.createClass({
   },
   render: function () {
     var info = this.state.userInfo;
-    var name = info.done && info.result && info.result.name;
+    var name = info && info.done && info.result && info.result.name;
     var text = name ? ["Logout (", name, ")"] : "Logout";
     return (
       <div className="dashboard">
         Dashboard
         <button type="button" onClick={this._unauth}>{text}</button>
         <button type="button" onClick={this._temp}>Load friends</button>
+        <FriendList />
       </div>
     );
   },

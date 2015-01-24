@@ -37,6 +37,9 @@ var UsersStore = Marty.createStore({
       }
     });
   },
+  getUsersInfo: function UsersStore__getUsersInfo() {
+    return this.state.info || {};
+  },
   auth: function UsersStore__auth(data) {
     this.setState({
       current: data,
@@ -44,7 +47,14 @@ var UsersStore = Marty.createStore({
   },
   info: function UsersStore__info(data) {
     this.state.info = this.state.info || {};
-    this.state.info[data.id] = data;
+    if (data.forEach) {
+      var i, l;
+      for (i = 0, l = data.length; i < l; i++) {
+        this.state.info[data[i].id] = data[i];
+      }
+    } else {
+      this.state.info[data.id] = data;
+    }
     this.hasChanged();
   }
 });
