@@ -4,6 +4,7 @@ var Navigation = require('react-router').Navigation;
 var Auth = require('../lib/Auth');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
+var Facebook = require('../lib/api/Facebook');
 
 var Dashboard = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
@@ -30,6 +31,7 @@ var Dashboard = React.createClass({
       <div className="dashboard">
         Dashboard
         <button type="button" onClick={this._unauth}>{text}</button>
+        <button type="button" onClick={this._temp}>Load friends</button>
       </div>
     );
   },
@@ -37,6 +39,14 @@ var Dashboard = React.createClass({
     e.preventDefault();
     Auth.logout();
     UsersActionCreators.auth(null);
+  },
+  _temp: function Dashboard___temp(e) {
+    e.preventDefault();
+    var id = Auth.user && Auth.user.userID;
+    if (!id) {
+      return;
+    }
+    Facebook.friendsFor(id);
   }
 });
 

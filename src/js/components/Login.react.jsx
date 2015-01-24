@@ -33,19 +33,13 @@ var Login = React.createClass({
   },
 
   render: function Login__render() {
-    var loginButtons = Object.keys(Auth.providers).map(function (key) {
-        return (
-          <LoginButton
-            key={ key }
-            provider={ key }
-            name={ Auth.providers[key] }
-            onClick={ this._auth }/>
-        );
-    }, this);
-
     return (
       <div>
-        { loginButtons }
+        <LoginButton
+          key="facebook"
+          provider="facebook"
+          name="Facebook"
+          onClick={ this._auth }/>
       </div>
     );
   },

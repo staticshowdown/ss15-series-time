@@ -3,9 +3,9 @@ var Promise = require('bluebird');
 var FB = require('fb');
 
 var Auth = {
-  providers: {
-    facebook: 'Facebook',
-  },
+  permissions: [
+    'user_friends',
+  ],
 
   user: null,
 
@@ -28,10 +28,6 @@ var Auth = {
       return Promise.resolve(Auth.user);
     }
 
-    if (!Auth.providers[provider]) {
-      return Promise.reject(new Error("Invalid provider."));
-    }
-
     return new Promise(function(resolve, reject){
       FB.login(function(response){
         if (response.authResponse) {
@@ -40,7 +36,7 @@ var Auth = {
           return resolve(data);
         }
         return reject(new Error("User cancelled login or did not fully authorize."));
-      });
+      }, {scope: Auth.permissions.join(',')});
     });
   }
 };
