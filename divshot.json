@@ -1,0 +1,14 @@
+{
+  "name": "ss15-series-time",
+  "root": "./",
+  "clean_urls": true,
+  "error_page": "error.html",
+  "exclude": [
+    "node_modules",
+    "src",
+    "npm-debug.log",
+    "package.json",
+    "webpack.config.js",
+    "production.webpack.config.js"
+  ]
+}
