@@ -1,5 +1,7 @@
 var React = require('react');
 
+require('../../css/LoginButton');
+
 var LoginButton = React.createClass({
   propTypes: {
     provider: React.PropTypes.string.isRequired,
@@ -8,9 +10,11 @@ var LoginButton = React.createClass({
   },
   render: function LoginButton__render() {
     return (
-      <div onClick={ this._clicked }>
-        Login with
-        <strong> { this.props.name }</strong>
+      <div onClick={ this._clicked } className={ 'login-button login-button--' + this.props.provider }>
+        Login with&nbsp;
+        <span className="login-button__provider">
+          { this.props.name }
+        </span>
       </div>
     );
   },

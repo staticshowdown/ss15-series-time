@@ -9,6 +9,8 @@ var Dashboard = require('./components/Dashboard.react');
 var Auth = require('./lib/Auth.js');
 var UsersActionCreators = require('./actions/UsersActionCreators.js');
 
+require('../css/main');
+
 var routes = (
   <Route path="/" handler={ Container }>
     <DefaultRoute handler={ Dashboard } />
