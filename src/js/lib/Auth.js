@@ -11,9 +11,15 @@ var Auth = {
 
   logout: function Auth__logout() {
     return new Promise(function(resolve, reject){
-      FB.logout(function(response){
+      try {
+        Auth.user = null;
+        FB.logout(function(response){
+          resolve();
+        });
+      } catch (e) {
+        // Probably called logout without accessToken error
         resolve();
-      });
+      }
     });
   },
 
