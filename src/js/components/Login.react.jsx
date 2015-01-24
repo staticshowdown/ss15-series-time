@@ -1,11 +1,12 @@
 var React = require('react');
 var Navigation = require('react-router').Navigation;
 
-var LoginButton = require('./LoginButton.react');
 var UsersStore = require('../stores/UsersStore');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Auth = require('../lib/Auth');
+
+require('../../css/Login');
 
 var Login = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
@@ -34,12 +35,17 @@ var Login = React.createClass({
 
   render: function Login__render() {
     return (
-      <div>
-        <LoginButton
-          key="facebook"
-          provider="facebook"
-          name="Facebook"
-          onClick={ this._auth }/>
+      <div className="login">
+        <div className="login__box">
+          <div className="login__text">
+            Follow your favorite series and check what your friends have been watching.
+          </div>
+
+          <div onClick={ this._auth } className="login__button">
+            Login with&nbsp;
+            <span className="login__button__facebook">Facebook</span>
+          </div>
+        </div>
       </div>
     );
   },
