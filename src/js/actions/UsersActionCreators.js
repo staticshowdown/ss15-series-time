@@ -4,6 +4,9 @@ var UsersConstants = require('../constants/UsersConstants');
 var UsersActionCreators = Marty.createActionCreators({
   auth: UsersConstants.AUTH(function (data) {
     this.dispatch(data);
+  }),
+  info: UsersConstants.INFO(function(data) {
+    this.dispatch(data);
   })
 });
 

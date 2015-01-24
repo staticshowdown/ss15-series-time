@@ -6,6 +6,8 @@ var DefaultRoute = Router.DefaultRoute;
 var Container = require('./components/Container.react');
 var Login = require('./components/Login.react');
 var Dashboard = require('./components/Dashboard.react');
+var Auth = require('./lib/Auth.js');
+var UsersActionCreators = require('./actions/UsersActionCreators.js');
 
 var routes = (
   <Route path="/" handler={ Container }>
@@ -14,6 +16,19 @@ var routes = (
   </Route>
 );
 
+FB.init({
+  appId      : '650586588396782',
+  xfbml      : true,
+  version    : 'v2.2'
+});
+
+FB.getLoginStatus(function(response){
+  if (response.status === 'connected') {
+    Auth.user = response.authResponse;
+    UsersActionCreators.auth(Auth.user);
+  }
+});
+
 Router.run(routes, function (Handler) {
-  React.render(<Handler />, document.body);
+  React.render(<Handler />, document.getElementById('stage'));
 });

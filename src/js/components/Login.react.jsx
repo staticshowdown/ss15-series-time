@@ -1,5 +1,4 @@
 var React = require('react');
-var Firebase = require('firebase');
 var Navigation = require('react-router').Navigation;
 
 var LoginButton = require('./LoginButton.react');
@@ -7,8 +6,6 @@ var UsersStore = require('../stores/UsersStore');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Auth = require('../lib/Auth');
-
-var ref = new Firebase('https://ss15-series-time.firebaseio.com/');
 
 var Login = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],

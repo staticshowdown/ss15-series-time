@@ -1,8 +1,6 @@
 var config = require('../config');
-var Firebase = require('firebase');
 var Promise = require('bluebird');
-
-var ref = new Firebase(config.firebaseUrl);
+var FB = require('fb');
 
 var Auth = {
   providers: {
@@ -12,9 +10,11 @@ var Auth = {
   user: null,
 
   logout: function Auth__logout() {
-    ref.unauth();
-    Auth.user = null;
-    return Promise.resolve(null);
+    return new Promise(function(resolve, reject){
+      FB.logout(function(response){
+        resolve();
+      });
+    });
   },
 
   login: function Auth__login(provider) {
@@ -27,39 +27,16 @@ var Auth = {
     }
 
     return new Promise(function(resolve, reject){
-      var transports = [
-        'authWithOAuthPopup',
-        'authWithOAuthRedirect',
-      ];
-
-      doAuth(transports.shift());
-
-      function doAuth(transport) {
-        ref[transport](provider, function(err, data){
-          if (err) {
-            if (err.code === 'TRANSPORT_UNAVAILABLE' && transports.length > 0) {
-              doAuth(transports.shift());
-              return;
-            }
-
-            return reject(err);
-          }
-
-          if (data) {
-            ref.child("users").child(data.uid).set(data);
-            Auth.user = data;
-            return resolve(data);
-          }
-
-          return reject(new Error("No user data."));
-        });
-      }
+      FB.login(function(response){
+        if (response.authResponse) {
+          var data = response.authResponse;
+          Auth.user = data;
+          return resolve(data);
+        }
+        return reject(new Error("User cancelled login or did not fully authorize."));
+      });
     });
   }
 };
-
-ref.onAuth(function(data){
-  Auth.user = data;
-});
 
 module.exports = Auth;

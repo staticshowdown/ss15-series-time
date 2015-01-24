@@ -5,20 +5,47 @@ var Auth = require('../lib/Auth');
 
 var UsersStore = Marty.createStore({
   handlers: {
-    auth: UsersConstants.AUTH
+    auth: UsersConstants.AUTH,
+    info: UsersConstants.INFO
   },
-  getInitialState: function () {
+  getInitialState: function UsersStore__getInitialState() {
     return {
-      users: {},
-    };
+      info: {},
+    }; // Useless
   },
   getCurrentUser: function UsersStore__getCurrentUser() {
     return this.state.current;
+  },
+  getCurrentUserInfo: function UsersStore__getCurrentUserInfo() {
+    var data = this.state.current;
+    if (!data || !data.userID) {
+      return null;
+    }
+
+    return this.fetch({
+      id: data.userID,
+      locally: function UsersStore__getCurrentUserInfo__locally(){
+        return this.state.info && this.state.info[data.userID];
+      },
+      remotely: function UsersStore__getCurrentUserInfo__remotely(){
+        return new Promise(function(resolve, reject){
+          FB.api('/me', function(data){
+            UsersActionCreators.info(data);
+            resolve(null);
+          });
+        });
+      }
+    });
   },
   auth: function UsersStore__auth(data) {
     this.setState({
       current: data,
     });
+  },
+  info: function UsersStore__info(data) {
+    this.state.info = this.state.info || {};
+    this.state.info[data.id] = data;
+    this.hasChanged();
   }
 });
 

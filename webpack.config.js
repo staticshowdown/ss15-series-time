@@ -11,6 +11,10 @@ module.exports = {
     filename: 'bundle.js',
   },
 
+  externals: {
+    "fb": "FB",
+  },
+
   resolve: {
     extensions: ['', '.js', '.jsx', '.styl'],
   },

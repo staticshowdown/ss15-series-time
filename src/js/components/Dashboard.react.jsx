@@ -4,6 +4,7 @@ var Navigation = require('react-router').Navigation;
 var Auth = require('../lib/Auth');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
+var Facebook = require('../lib/api/Facebook');
 
 var Dashboard = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
@@ -23,10 +24,13 @@ var Dashboard = React.createClass({
     }
   },
   render: function () {
+    var info = this.state.userInfo;
+    var name = info.done && info.result && info.result.name;
+    var text = name ? ["Logout (", name, ")"] : "Logout";
     return (
       <div className="dashboard">
         Dashboard
-        <button type="button" onClick={this._unauth}>Logout ({Auth.user.facebook.displayName})</button>
+        <button type="button" onClick={this._unauth}>{text}</button>
       </div>
     );
   },
