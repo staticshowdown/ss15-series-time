@@ -13,19 +13,9 @@ var UsersStore = Marty.createStore({
     };
   },
   getCurrentUser: function UsersStore__getCurrentUser() {
-    return this.fetch({
-      id: 'current',
-      locally: function UsersStore__getCurrentUser__locally() {
-        return this.state.current;
-      },
-      remotely: function UsersStore__getCurrentUser__remotely() {
-        UsersActionCreators.auth(Auth.user);
-        return true;
-      }
-    });
+    return this.state.current;
   },
   auth: function UsersStore__auth(data) {
-    console.log('store.auth', data);
     this.setState({
       current: data,
     });

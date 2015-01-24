@@ -1,8 +1,6 @@
 var config = require('../config');
 var Firebase = require('firebase');
 var Promise = require('bluebird');
-var UsersActionCreators = require('../actions/UsersActionCreators');
-var UsersStore = require('../stores/UsersStore');
 
 var ref = new Firebase(config.firebaseUrl);
 
@@ -16,7 +14,6 @@ var Auth = {
   logout: function Auth__logout() {
     ref.unauth();
     Auth.user = null;
-    UsersActionCreators.auth(null);
   },
 
   login: function Auth__login(provider) {
@@ -50,7 +47,6 @@ var Auth = {
           if (data) {
             ref.child("users").child(data.uid).set(data);
             Auth.user = data;
-            UsersActionCreators.auth(data);
             return resolve(data);
           }
 

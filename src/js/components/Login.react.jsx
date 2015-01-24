@@ -2,6 +2,7 @@ var React = require('react');
 var Firebase = require('firebase');
 var LoginButton = require('./LoginButton.react');
 var UsersStore = require('../stores/UsersStore');
+var UsersActionCreators = require('../actions/UsersActionCreators');
 var Auth = require('../lib/Auth');
 
 var ref = new Firebase('https://ss15-series-time.firebaseio.com/');
@@ -23,7 +24,6 @@ var Login = React.createClass({
   },
 
   onUsersChange: function Login__onUsersChange() {
-    console.log('change');
     this.setState({
       user: UsersStore.getCurrentUser(),
     });
@@ -31,8 +31,7 @@ var Login = React.createClass({
 
   render: function Login__render() {
     var user;
-    console.log('render', this.state.user.result, this.state.user);
-    if (user = this.state.user.result) {
+    if (user = this.state.user) {
       var name = user[user.provider].displayName;
       return <button type="button" onClick={this._unauth}>Logout ({name})</button>;
     }
@@ -64,11 +63,14 @@ var Login = React.createClass({
       component.setState({ loading: false });
     }).catch(function(err){
       console.error(err);
+    }).done(function(data){
+      UsersActionCreators.auth(data);
     });
   },
   _unauth: function Login___unauth(e) {
     e.preventDefault();
     Auth.logout();
+    UsersActionCreators.auth(null);
   }
 });
 
