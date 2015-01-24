@@ -5,6 +5,7 @@ var FB = require('fb');
 var Auth = {
   permissions: [
     'user_friends',
+    'user_likes',
   ],
 
   user: null,
