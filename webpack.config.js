@@ -7,17 +7,18 @@ module.exports = {
 
   output: {
     publicPath: 'public/js/',
-    path: __dirname + "/public/js",
+    path: __dirname + '/public/js',
     filename: 'bundle.js',
   },
 
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['', '.js', '.jsx', '.styl'],
   },
 
   module: {
     loaders: [
       { test: /\.jsx?$/i, loader: 'react-hot!jsx' },
+      {test: /\.styl$/, loader: 'style-loader!css-loader!stylus-loader'},
     ]
   },
 };
