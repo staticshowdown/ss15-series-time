@@ -4,7 +4,6 @@ var Navigation = require('react-router').Navigation;
 var Auth = require('../lib/Auth');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
-var Facebook = require('../lib/api/Facebook');
 
 var Dashboard = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
