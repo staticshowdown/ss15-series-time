@@ -25,7 +25,10 @@ var FriendList = React.createClass({
     }
 
     return (
-      <ul>{friends}</ul>
+      <div>
+        <h3>Friend list</h3>
+        <ul>{friends}</ul>
+      </div>
     );
   }
 });

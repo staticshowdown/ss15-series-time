@@ -6,6 +6,7 @@ var Auth = {
   permissions: [
     'user_friends',
     'user_likes',
+    'user_actions.video',
   ],
 
   user: null,
@@ -30,6 +31,7 @@ var Auth = {
     }
 
     return new Promise(function(resolve, reject){
+      var scope = Auth.permissions.join(',');
       FB.login(function(response){
         if (response.authResponse) {
           var data = response.authResponse;
@@ -37,7 +39,7 @@ var Auth = {
           return resolve(data);
         }
         return reject(new Error("User cancelled login or did not fully authorize."));
-      }, {scope: Auth.permissions.join(',')});
+      }, {scope: scope});
     });
   }
 };
