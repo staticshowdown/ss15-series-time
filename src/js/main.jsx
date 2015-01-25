@@ -7,6 +7,7 @@ var Container = require('./components/Container.react');
 var Login = require('./components/Login.react');
 var Dashboard = require('./components/Dashboard.react');
 var SeriesDetails = require('./components/SeriesDetails.react');
+var UserProfile = require('./components/UserProfile.react');
 var Auth = require('./lib/Auth.js');
 var UsersActionCreators = require('./actions/UsersActionCreators.js');
 
@@ -17,6 +18,7 @@ var routes = (
     <DefaultRoute handler={ Dashboard } />
     <Route name="login" path="login" handler={ Login } />
     <Route name="series" path="series/:id" handler={ SeriesDetails } />
+    <Route name="profile" path="user/:id" handler={ UserProfile } />
   </Route>
 );
 
