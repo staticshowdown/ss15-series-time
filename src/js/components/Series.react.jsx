@@ -17,6 +17,7 @@ var Series = React.createClass({
             <img src="" />
             <img src="" />
           </div>
+        </div>
       </div>
     );
   }
