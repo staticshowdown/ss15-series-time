@@ -6,6 +6,7 @@ var DefaultRoute = Router.DefaultRoute;
 var Container = require('./components/Container.react');
 var Login = require('./components/Login.react');
 var Dashboard = require('./components/Dashboard.react');
+var SeriesDetails = require('./components/SeriesDetails.react');
 var Auth = require('./lib/Auth.js');
 var UsersActionCreators = require('./actions/UsersActionCreators.js');
 
@@ -15,6 +16,7 @@ var routes = (
   <Route path="/" handler={ Container }>
     <DefaultRoute handler={ Dashboard } />
     <Route name="login" path="login" handler={ Login } />
+    <Route name="series" path="series/:id" handler={ SeriesDetails } />
   </Route>
 );
 
