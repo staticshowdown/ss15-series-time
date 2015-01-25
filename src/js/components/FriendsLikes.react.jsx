@@ -33,7 +33,7 @@ var FriendsLikes = React.createClass({
     var i, m = this.state.medias;
 
     var series = this.state.medias.map(function (m) {
-      return <Series media={m} />;
+      return <Series media={m} friends={ true } />;
     });
 
     return (

@@ -6,6 +6,14 @@ var Series = React.createClass({
   render: function () {
     var m = this.props.media;
 
+    var left = this.props.friends ?
+      '' :
+      <img src="/images/dashboard__icon-unlike.png" />;
+    var right = this.props.friends ?
+      <img src="/images/dashboard__icon-like.png" /> :
+      <img src="/images/dashboard__icon-done.png" />;
+
+
     return (
       <div
         className="series"
@@ -13,9 +21,10 @@ var Series = React.createClass({
         title={ m.name }>
         <div className="series__overlay">
           <div className="series__controls">
-            <img src="" />
-            <img src="" />
-            <img src="" />
+            { left }
+
+            <img src="/images/dashboard__icon-view.png" />
+            { right }
           </div>
         </div>
       </div>
