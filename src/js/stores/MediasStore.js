@@ -15,50 +15,38 @@ var MediasStore = Marty.createStore({
     };
   },
 
-  get: function MediasStore__get(userId) {
-    if (!userId) {
+  getForUser: function MediasStore__getForUser(userId) {
+    var rs, i, l, u = this.state.userMediaMap[userId];
+    if (u && u.map) {
+      var t = this;
+      rs = u.map(function(i){
+        return t.state.medias[i];
+      });
+    }
+
+    return rs || [];
+  },
+
+  get: function MediasStore__get(id) {
+    if (!id) {
       return this.state.medias;
     }
 
-    if (!this.state.userMediaMap[userId]) {
-      return [];
-    }
-
-    var m = this.state.medias;
-    return this.state.userMediaMap[userId].map(function(id){
-      return m[id];
-    });
+    return this.state.medias[id];
   },
 
-  set: function MediasStore__set(data, userId) {
-    if (!data || data.length <= 0) {
-      return;
-    }
-
+  set: function MediasStore__set(facebook, omdb, userId) {
     this.state.medias = (this.state.medias || {});
     this.state.userMediaMap = (this.state.userMediaMap || {});
     this.state.userMediaMap[userId] = (this.state.userMediaMap[userId] || []);
 
-    var i, l;
-    for (i = 0, l = data.length; i < l; i++) {
-      var d = data[i];
-      if (d.application.name != 'TV Shows') {
-        continue;
-      }
+    facebook.omdb = omdb;
 
-      var m = d.data.tv_show;
-      m.dates = {
-        publish: new Date(d.publish_time),
-        start: new Date(d.start_time),
-        end: new Date(d.end_time),
-      };
-
-      if (!this.state.userMediaMap[userId].indexOf(m.id)) {
-        this.state.userMediaMap[userId].push(m.id);
-      }
-
-      this.state.medias[m.id] = m;
+    if (this.state.userMediaMap[userId].indexOf(facebook.id) === -1) {
+      this.state.userMediaMap[userId].push(facebook.id);
     }
+
+    this.state.medias[facebook.id] = facebook;
 
     this.hasChanged();
   }

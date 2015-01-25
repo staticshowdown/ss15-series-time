@@ -3,6 +3,7 @@ var FB = require('fb');
 var MediasStore = require('../../stores/MediasStore');
 var UsersActionCreators = require('../../actions/UsersActionCreators');
 var MediasActionCreators = require('../../actions/MediasActionCreators');
+var Omdb = require('./Omdb');
 
 module.exports = {
   friendsFor: function Facebook__friendsFor(id) {
@@ -42,7 +43,24 @@ module.exports = {
 function createVideoResponseHandler(resolve, reject, userId) {
   return function(response) {
     if (response.data) {
-      MediasActionCreators.set(response.data, userId);
+      var i, l, p = [];
+      for (i = 0, l = response.data.length; i < l; i++) {
+        var d = response.data[i];
+        if (!d.data.tv_show || MediasStore.get(d.data.tv_show.id)) {
+          continue;
+        }
+        p.push(
+          new Promise(function(resolve, reject){
+            FB.api('/' + d.data.tv_show.id, function(response){
+              Omdb.search(response.id, response.name).finally(function(){
+                resolve();
+              }).done(function(omdb){
+                MediasActionCreators.set(response, omdb, userId);
+              });
+            });
+          })
+        );
+      }
     }
 
     if (response && response.paging && response.paging.next) {
@@ -50,6 +68,8 @@ function createVideoResponseHandler(resolve, reject, userId) {
       return;
     }
 
-    resolve();
+    Promise.all(p).then(function(){
+      resolve();
+    });
   }
 }
