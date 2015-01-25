@@ -11,14 +11,6 @@ var Series = React.createClass({
   render: function () {
     var m = this.props.media;
 
-    var left = this.props.friends ?
-      '' :
-      <img src="/images/dashboard__icon-unlike.png" />;
-    var right = this.props.friends ?
-      <img src="/images/dashboard__icon-like.png" /> :
-      <img src="/images/dashboard__icon-done.png" />;
-
-
     return (
       <div
         className="series"
@@ -26,12 +18,7 @@ var Series = React.createClass({
         title={ m.name }
         onClick={this.onClick}>
         <div className="series__overlay">
-          <div className="series__controls">
-            { left }
-            <img src="/images/dashboard__icon-view.png" />
-            { right }
-            <h4>{m.name}</h4>
-          </div>
+          <h4>{m.name}</h4>
         </div>
       </div>
     );

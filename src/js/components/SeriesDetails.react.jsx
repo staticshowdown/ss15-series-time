@@ -80,7 +80,7 @@ var SeriesDetails =  React.createClass({
       Year: m.omdb.Year || '-',
       Country: m.omdb.Country || '-',
       Genre: m.omdb.Genre || '-',
-      Schedule: m.schedule || '-',
+      //Schedule: m.schedule || '-',
     };
 
     var info = Object.keys(_info).map(function (name) {
