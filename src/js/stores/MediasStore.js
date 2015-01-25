@@ -15,13 +15,20 @@ var MediasStore = Marty.createStore({
     };
   },
 
-  getForUser: function MediasStore__getForUser(userId) {
+  getForUser: function MediasStore__getForUser(userId, inverted) {
     var rs, i, l, u = this.state.userMediaMap[userId];
+
     if (u && u.map) {
       var t = this;
-      rs = u.map(function(i){
-        return t.state.medias[i];
-      });
+      if (inverted) {
+        rs = this.getMedias().filter(function(m){
+          return u.indexOf(m.id) === -1;
+        });
+      } else {
+        rs = u.map(function(i){
+          return t.state.medias[i];
+        });
+      }
     }
 
     return (rs || []).sort(this._sortByLikes);

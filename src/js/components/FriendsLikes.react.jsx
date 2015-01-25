@@ -1,11 +1,29 @@
 var React = require('react');
 var Series = require('./Series.react');
-var MediasStateMixin = require('../mixins/MediasStateMixin');
+var MediasStore = require('../stores/MediasStore');
+var UsersStateMixin = require('../mixins/UsersStateMixin');
 
 require('../../css/FriendsLikes');
 
 var FriendsLikes = React.createClass({
-  mixins: [ MediasStateMixin ],
+  mixins: [ UsersStateMixin ],
+
+  componentDidMount: function UserLikes__componentDidMount() {
+    this.mediasStoreListener = MediasStore.addChangeListener(this.onMediasStoreChanged);
+  },
+
+  componentWillUnmount: function UserLikes__componentWillUnmount() {
+    this.mediasStoreListener.dispose();
+  },
+
+  onMediasStoreChanged: function UserLikes__onMediasStoreChanged() {
+    var id = this.state.user.userID;
+    if (id) {
+      this.setState({
+        medias: MediasStore.getForUser(id, true),
+      });
+    }
+  },
 
   render: function FriendsLike__render() {
     if (!this.state.medias || this.state.medias.length === 0) {
