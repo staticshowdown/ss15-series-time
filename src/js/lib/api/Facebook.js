@@ -5,6 +5,10 @@ var UsersActionCreators = require('../../actions/UsersActionCreators');
 var MediasActionCreators = require('../../actions/MediasActionCreators');
 var Omdb = require('./Omdb');
 
+var loading = {
+  medias: [],
+};
+
 var Facebook = {
   initialized: false,
 
@@ -58,33 +62,33 @@ var Facebook = {
 
 function createVideoResponseHandler(resolve, reject, userId) {
   return function(response) {
-    if (response.data) {
-      var i, l, p = [];
-      for (i = 0, l = response.data.length; i < l; i++) {
-        var d = response.data[i];
-        if (!d.data.tv_show || MediasStore.getMedias(d.data.tv_show.id)) {
-          if (d.data.tv_show && d.data.tv_show.id) {
-            MediasActionCreators.userToMedia(userId, d.data.tv_show.id);
-          }
-          continue;
-        }
-        p.push(
-          new Promise(function(resolve, reject){
-            FB.api('/' + d.data.tv_show.id, function(response){
-              Omdb.search(response.id, response.name).finally(function(){
-                resolve();
-              }).done(function(omdb){
-                MediasActionCreators.set(response, omdb, userId);
-              });
-            });
-          })
-        );
-      }
-    }
+    var i, l, p = [];
 
-    if (response && response.paging && response.paging.next) {
-      FB.api(response.paging.next, createVideoResponseHandler(resolve, reject, userId));
-      return;
+    for (i = 0, l = response.data.length; i < l; i++) {
+      var d = response.data[i].data;
+      if (!d.tv_show) {
+        continue;
+      }
+
+      var t = d.tv_show;
+      if (loading.medias.indexOf(t.id) !== -1) {
+        MediasActionCreators.userToMedia(userId, t.id);
+        continue;
+      }
+
+      loading.medias.push(t.id);
+
+      p.push(
+        new Promise(function(resolve, reject){
+          FB.api('/' + t.id, function(response){
+            Omdb.search(response.id, response.name).finally(function(){
+              resolve();
+            }).done(function(omdb){
+              MediasActionCreators.set(response, omdb, userId);
+            });
+          });
+        })
+      );
     }
 
     Promise.all(p).then(function(){

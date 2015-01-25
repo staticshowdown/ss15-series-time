@@ -10,7 +10,7 @@ var Header = React.createClass({
   render: function () {
     var extra = Object.keys(this.props.extra).map(function (key) {
       return (
-        <span>
+        <span key={key}>
           { key }
           <span className="header__extra__value">{ this.props.extra[key] }</span>
         </span>

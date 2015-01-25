@@ -1,12 +1,15 @@
 var React = require('react');
 var Series = require('./Series.react');
 var MediasStore = require('../stores/MediasStore');
-var UsersStateMixin = require('../mixins/UsersStateMixin');
 
 require('../../css/UserLikes');
 
 var UserLikes = React.createClass({
-  mixins: [ UsersStateMixin ],
+  getInitialState: function(){
+    return {
+      medias: MediasStore.getForUser(this.props.userId),
+    };
+  },
 
   componentDidMount: function UserLikes__componentDidMount() {
     this.mediasStoreListener = MediasStore.addChangeListener(this.onMediasStoreChanged);
@@ -17,12 +20,9 @@ var UserLikes = React.createClass({
   },
 
   onMediasStoreChanged: function UserLikes__onMediasStoreChanged() {
-    var id = this.state.user.userID;
-    if (id) {
-      this.setState({
-        medias: MediasStore.getForUser(id),
-      });
-    }
+    this.setState({
+      medias: MediasStore.getForUser(this.props.userId),
+    });
   },
 
   render: function UserLikes__render() {
@@ -33,7 +33,10 @@ var UserLikes = React.createClass({
     var count = this.state.medias.length;
 
     var series = this.state.medias.map(function (m) {
-      return <Series media={m} onClick={this.props.onItemClick} />;
+      if (!m) {
+        return null;
+      }
+      return <Series key={m.id} media={m} onClick={this.props.onItemClick} />;
     }, this);
 
     return (

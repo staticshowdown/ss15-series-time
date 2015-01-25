@@ -42,8 +42,7 @@ var Dashboard = React.createClass({
   render: function () {
     var id = this.state.user.userID;
     var info = this.state.userInfo;
-    var name = info && info.done && info.result && info.result.name;
-    var text = name ? ["Logout (", name, ")"] : "Logout";
+    var name = info && info.done && info.result && info.result.name || "";
     var count = this.state.userMedia.length || 0;
 
     return (
@@ -55,8 +54,8 @@ var Dashboard = React.createClass({
         </Header>
 
         <div className="dashboard__content">
-          <UserLikes onItemClick={this.onItemClick} />
-          <FriendsLikes onItemClick={this.onItemClick} />
+          <UserLikes userId={id} onItemClick={this.onItemClick} />
+          <FriendsLikes userId={id} onItemClick={this.onItemClick} />
         </div>
       </div>
     );

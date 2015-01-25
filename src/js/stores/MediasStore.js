@@ -35,16 +35,16 @@ var MediasStore = Marty.createStore({
     return (rs || []).sort(this._sortByLikes);
   },
 
-  getUserCount: function MediasStore__getUserCount(id) {
-    var i, count = 0, m = this.state.userMediaMap;
+  getUsers: function MediasStore__getUsers(id) {
+    var i, rs = [], m = this.state.userMediaMap;
 
     for (i in m) {
       if (m[i].indexOf(id) !== -1) {
-        count++;
+        rs.push(i);
       }
     }
 
-    return count;
+    return rs;
   },
 
   getMedias: function MediasStore__getMedias(id) {
@@ -74,7 +74,8 @@ var MediasStore = Marty.createStore({
 
   addUserToMedia: function MediasStore__addUserToMedia(user, media) {
     this.state.userMediaMap = (this.state.userMediaMap || {});
-    this.state.userMediaMap[userId] = (this.state.userMediaMap[userId] || []);
+    this.state.userMediaMap[user] = (this.state.userMediaMap[user] || []);
+
     if (this.state.userMediaMap[user].indexOf(media) === -1) {
       this.state.userMediaMap[user].push(media);
     }

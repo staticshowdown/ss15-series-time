@@ -6,6 +6,7 @@ var FriendWatcher = require('./FriendWatcher.react');
 var MediasStore = require('../stores/MediasStore');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Facebook = require('../lib/api/Facebook');
+var FB = require('fb');
 
 require('../../css/SeriesDetails');
 
@@ -14,10 +15,19 @@ var SeriesDetails =  React.createClass({
 
   getInitialState: function SeriesDetails__getInitialState() {
     var id = this.getParams().id;
+    var users = [];
+    var userCount = 0;
+
+    if (id) {
+      users = MediasStore.getUsers(id);
+      userCount = users.length;
+    }
 
     return {
       id: id,
       media: MediasStore.getMedias(id),
+      users: users,
+      userCount: userCount,
     };
   },
 
@@ -35,16 +45,26 @@ var SeriesDetails =  React.createClass({
   },
 
   onMediasStoreChanged: function SeriesDetails__onMediasStoreChanged() {
-    var id = this.state.user.userID;
+    var users = [];
     var userCount = 0;
 
     if (id) {
-      userCount = MediasStore.getUserCount(this.state.id);
+      users = MediasStore.getUsers(this.state.id);
+      userCount = users.length;
     }
 
     this.setState({
       media: MediasStore.getMedias(this.state.id),
+      users: users,
       userCount: userCount,
+    });
+  },
+
+  onClickShare: function SeriesDetails__onClickShare(l, e) {
+    e.preventDefault();
+    FB.ui({
+      method: 'shared',
+      href: l,
     });
   },
 
@@ -65,7 +85,7 @@ var SeriesDetails =  React.createClass({
 
     var info = Object.keys(_info).map(function (name) {
       return (
-        <div className="details__info__entry">
+        <div className="details__info__entry" key={name}>
           { name }
           <div className="details__info__value">
             { _info[name] }
@@ -74,8 +94,8 @@ var SeriesDetails =  React.createClass({
       );
     });
 
-    var friends = [1,1,1,1,1,1,1].map(function () {
-      return <FriendWatcher />;
+    var friends = this.state.users.map(function (id) {
+      return <FriendWatcher id={id} />;
     });
 
     return (
@@ -88,9 +108,7 @@ var SeriesDetails =  React.createClass({
 
         <div className="details__content">
           <ul className="details__menu">
-            <li>I've watched</li>
-            <li>Like</li>
-            <li>Share</li>
+            <li onClick={this.onClickShare.bind(this, m.link)}>Share</li>
           </ul>
 
           <div className="details__info">
