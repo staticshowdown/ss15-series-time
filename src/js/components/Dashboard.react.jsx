@@ -7,7 +7,7 @@ var UsersStateMixin = require('../mixins/UsersStateMixin');
 var Facebook = require('../lib/api/Facebook');
 var FriendList = require('./FriendList.react');
 
-var UserInfo = require('./UserInfo.react');
+var Header = require('./Header.react');
 var UserLikes = require('./UserLikes.react');
 var FriendsLikes = require('./FriendsLikes.react');
 
@@ -38,7 +38,13 @@ var Dashboard = React.createClass({
     var text = name ? ["Logout (", name, ")"] : "Logout";
     return (
       <div className="dashboard">
-        <UserInfo />
+        <Header name="Tadeu Zagallo" extra={{
+          'Member Since': '7 JAN 2014',
+          'Series Watched': 34
+        }}>
+          <img src="http://graph.facebook.com/tadeuzagallo/picture?height=150&width=150" className="dashboard__user-picture" />
+        </Header>
+
         <div className="dashboard__content">
           <UserLikes />
           <FriendsLikes />
@@ -62,7 +68,7 @@ var Dashboard = React.createClass({
     }
 
     Facebook.friendsFor(id).done(function(response){
-      var ids = response.map(function(r){ return r.id });
+      var ids = response.map(function(r){ return r.id; });
       ids.push(id);
       Facebook.videosFor(ids);
     });
