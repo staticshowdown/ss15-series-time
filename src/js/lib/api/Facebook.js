@@ -47,6 +47,9 @@ function createVideoResponseHandler(resolve, reject, userId) {
       for (i = 0, l = response.data.length; i < l; i++) {
         var d = response.data[i];
         if (!d.data.tv_show || MediasStore.getMedias(d.data.tv_show.id)) {
+          if (d.data.tv_show && d.data.tv_show.id) {
+            MediasActionCreators.userToMedia(userId, d.data.tv_show.id);
+          }
           continue;
         }
         p.push(

@@ -8,15 +8,15 @@ require('../../css/FriendsLikes');
 var FriendsLikes = React.createClass({
   mixins: [ UsersStateMixin ],
 
-  componentDidMount: function UserLikes__componentDidMount() {
+  componentDidMount: function FriendsLikes__componentDidMount() {
     this.mediasStoreListener = MediasStore.addChangeListener(this.onMediasStoreChanged);
   },
 
-  componentWillUnmount: function UserLikes__componentWillUnmount() {
+  componentWillUnmount: function FriendsLikes__componentWillUnmount() {
     this.mediasStoreListener.dispose();
   },
 
-  onMediasStoreChanged: function UserLikes__onMediasStoreChanged() {
+  onMediasStoreChanged: function FriendsLikes__onMediasStoreChanged() {
     var id = this.state.user.userID;
     if (id) {
       this.setState({

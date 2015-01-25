@@ -4,6 +4,7 @@ var Navigation = require('react-router').Navigation;
 var Auth = require('../lib/Auth');
 var UsersActionCreators = require('../actions/UsersActionCreators');
 var UsersStateMixin = require('../mixins/UsersStateMixin');
+var UserWithMediaStateMixin = require('../mixins/UserWithMediaStateMixin');
 var Facebook = require('../lib/api/Facebook');
 var FriendList = require('./FriendList.react');
 
@@ -14,7 +15,8 @@ var FriendsLikes = require('./FriendsLikes.react');
 require('../../css/Dashboard');
 
 var Dashboard = React.createClass({
-  mixins: [ UsersStateMixin, Navigation ],
+  mixins: [ UserWithMediaStateMixin, Navigation ],
+
   statics: {
     willTransitionTo: function (transition) {
       if (!Auth.user) {
@@ -33,16 +35,17 @@ var Dashboard = React.createClass({
   },
 
   render: function () {
+    var id = this.state.user.userID;
     var info = this.state.userInfo;
     var name = info && info.done && info.result && info.result.name;
     var text = name ? ["Logout (", name, ")"] : "Logout";
+
     return (
       <div className="dashboard">
-        <Header name="Tadeu Zagallo" extra={{
-          'Member Since': '7 JAN 2014',
-          'Series Watched': 34
+        <Header name={name} extra={{
+          'Series Watched': this.state.userMedia.length || 0
         }}>
-          <img src="http://graph.facebook.com/tadeuzagallo/picture?height=150&width=150" className="dashboard__user-picture" />
+          <img src={"http://graph.facebook.com/" + id + "/picture?height=150&width=150"} className="dashboard__user-picture" />
         </Header>
 
         <div className="dashboard__content">
