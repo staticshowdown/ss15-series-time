@@ -38,8 +38,7 @@ var FriendsLikes = React.createClass({
 
     return (
       <div className="friends-likes">
-        Most Friends Watching
-
+        Your friends watched
         <div className="friends-likes__series">
           { series }
         </div>

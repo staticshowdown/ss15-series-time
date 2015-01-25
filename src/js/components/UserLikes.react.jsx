@@ -39,7 +39,7 @@ var UserLikes = React.createClass({
     return (
       <div className="user-likes">
         <div className="user-likes__title">
-          Likes
+          Your series
           <span className="user-likes__title__value">{count}</span>
           <div className="user-likes__series">
             { series }
