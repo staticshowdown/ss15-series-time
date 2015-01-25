@@ -1,5 +1,6 @@
 var React = require('react');
 var Header = require('./Header.react');
+var FriendWatcher = require('./FriendWatcher.react');
 
 require('../../css/SeriesDetails');
 
@@ -22,6 +23,10 @@ var SeriesDetails =  React.createClass({
           </div>
         </div>
       );
+    });
+
+    var friends = [1,1,1,1,1,1,1].map(function () {
+      return <FriendWatcher />;
     });
 
     return (
@@ -49,7 +54,11 @@ var SeriesDetails =  React.createClass({
           </div>
 
           <div className="details__friends">
-            Friends watchers
+            <div className="details__friends__title">
+              Friends watchers
+            </div>
+
+            { friends }
           </div>
         </div>
       </div>
