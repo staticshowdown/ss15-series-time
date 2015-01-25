@@ -35,23 +35,28 @@ var Dashboard = React.createClass({
     }
   },
 
+  onItemClick: function Dashboard__onItemClick(media) {
+    this.transitionTo('/series/' + media.id);
+  },
+
   render: function () {
     var id = this.state.user.userID;
     var info = this.state.userInfo;
     var name = info && info.done && info.result && info.result.name;
     var text = name ? ["Logout (", name, ")"] : "Logout";
+    var count = this.state.userMedia.length || 0;
 
     return (
       <div className="dashboard">
         <Header name={name} extra={{
-          'Series Watched': this.state.userMedia.length || 0
+          'Series Watched': count
           }}>
           <img src={"http://graph.facebook.com/" + id + "/picture?height=150&width=150"} className="dashboard__user-picture" />
         </Header>
 
         <div className="dashboard__content">
-          <UserLikes />
-          <FriendsLikes />
+          <UserLikes onItemClick={this.onItemClick} />
+          <FriendsLikes onItemClick={this.onItemClick} />
         </div>
       </div>
     );

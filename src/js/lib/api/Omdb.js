@@ -13,7 +13,7 @@ var Omdb = {
       var q = qs.stringify({
         t: title,
         type: 'series',
-        plot: 'short',
+        plot: 'full',
         r: 'json',
         callback: fnName,
       });

@@ -35,6 +35,18 @@ var MediasStore = Marty.createStore({
     return (rs || []).sort(this._sortByLikes);
   },
 
+  getUserCount: function MediasStore__getUserCount(id) {
+    var i, count = 0, m = this.state.userMediaMap;
+
+    for (i in m) {
+      if (m[i].indexOf(id) !== -1) {
+        count++;
+      }
+    }
+
+    return count;
+  },
+
   getMedias: function MediasStore__getMedias(id) {
     if (!id) {
       var m = this.state.medias;

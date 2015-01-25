@@ -1,19 +1,68 @@
 var React = require('react');
+var State = require('react-router').State;
+var Navigation = require('react-router').Navigation;
 var Header = require('./Header.react');
 var FriendWatcher = require('./FriendWatcher.react');
+var MediasStore = require('../stores/MediasStore');
+var UsersStateMixin = require('../mixins/UsersStateMixin');
+var Facebook = require('../lib/api/Facebook');
 
 require('../../css/SeriesDetails');
 
-var _info = {
-  Year: 2014,
-  Country: 'USA',
-  Genre: 'Drama',
-  Seasons: 3,
-  Episodes: 12
-};
-
 var SeriesDetails =  React.createClass({
+  mixins: [ State, Navigation, UsersStateMixin ],
+
+  getInitialState: function SeriesDetails__getInitialState() {
+    var id = this.getParams().id;
+
+    return {
+      id: id,
+      media: MediasStore.getMedias(id),
+    };
+  },
+
+  shouldComponentUpdate: function Dashboard__shouldComponentUpdate(nextProps, nextState) {
+    Facebook.initialize(nextState.user.userID);
+    return true;
+  },
+
+  componentDidMount: function SeriesDetails__componentDidMount() {
+    this.mediasStoreListener = MediasStore.addChangeListener(this.onMediasStoreChanged);
+  },
+
+  componentWillUnmount: function SeriesDetails__componentWillUnmount() {
+    this.mediasStoreListener.dispose();
+  },
+
+  onMediasStoreChanged: function SeriesDetails__onMediasStoreChanged() {
+    var id = this.state.user.userID;
+    var userCount = 0;
+
+    if (id) {
+      userCount = MediasStore.getUserCount(this.state.id);
+    }
+
+    this.setState({
+      media: MediasStore.getMedias(this.state.id),
+      userCount: userCount,
+    });
+  },
+
   render: function() {
+    var m = this.state.media;
+    var userCount = this.state.userCount || 0;
+
+    if (!m) {
+      return null;
+    }
+
+    var _info = {
+      Year: m.omdb.Year || '-',
+      Country: m.omdb.Country || '-',
+      Genre: m.omdb.Genre || '-',
+      Schedule: m.schedule || '-',
+    };
+
     var info = Object.keys(_info).map(function (name) {
       return (
         <div className="details__info__entry">
@@ -31,11 +80,10 @@ var SeriesDetails =  React.createClass({
 
     return (
       <div className="details">
-        <Header name="Hannibal" extra={{
-          'Friends Watching': 34,
-          'Next Season': '12 FEB 2015'
+        <Header name={ m.name } extra={{
+          'Friends Watching': userCount,
         }}>
-          <img src="https://walter.trakt.us/images/shows/000/039/825/posters/thumb/430e1f1088.jpg?1420722108" className="details__picture" />
+          <img src={ m.omdb.Poster } className="details__picture" />
         </Header>
 
         <div className="details__content">
@@ -50,7 +98,7 @@ var SeriesDetails =  React.createClass({
           </div>
 
           <div className="details__sinopsis">
-            Explores the early relationship between the renowned psychiatrist and his patient, a young FBI criminal profiler, who is haunted by his ability to empathize with serial killers.
+            { m.omdb.Plot }
           </div>
 
           <div className="details__friends">

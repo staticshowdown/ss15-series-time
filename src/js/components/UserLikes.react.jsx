@@ -33,8 +33,8 @@ var UserLikes = React.createClass({
     var count = this.state.medias.length;
 
     var series = this.state.medias.map(function (m) {
-      return <Series media={m} />;
-    });
+      return <Series media={m} onClick={this.props.onItemClick} />;
+    }, this);
 
     return (
       <div className="user-likes">
