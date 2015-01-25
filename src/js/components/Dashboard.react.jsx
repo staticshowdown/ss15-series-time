@@ -30,6 +30,7 @@ var Dashboard = React.createClass({
       this.transitionTo('/login');
       return false;
     } else {
+      Facebook.initialize(nextState.user.userID);
       return true;
     }
   },
@@ -44,14 +45,13 @@ var Dashboard = React.createClass({
       <div className="dashboard">
         <Header name={name} extra={{
           'Series Watched': this.state.userMedia.length || 0
-        }}>
+          }}>
           <img src={"http://graph.facebook.com/" + id + "/picture?height=150&width=150"} className="dashboard__user-picture" />
         </Header>
 
         <div className="dashboard__content">
           <UserLikes />
           <FriendsLikes />
-          <button type="button" onClick={this._temp}>Load data</button>
         </div>
       </div>
     );
@@ -61,21 +61,8 @@ var Dashboard = React.createClass({
     e.preventDefault();
     Auth.logout();
     UsersActionCreators.auth(null);
+    Facebook.initialized = false;
   },
-
-  _temp: function Dashboard___temp(e) {
-    e.preventDefault();
-    var id = Auth.user && Auth.user.userID;
-    if (!id) {
-      return;
-    }
-
-    Facebook.friendsFor(id).done(function(response){
-      var ids = response.map(function(r){ return r.id; });
-      ids.push(id);
-      Facebook.videosFor(ids);
-    });
-  }
 });
 
 module.exports = Dashboard;

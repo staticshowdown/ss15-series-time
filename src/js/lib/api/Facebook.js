@@ -5,7 +5,23 @@ var UsersActionCreators = require('../../actions/UsersActionCreators');
 var MediasActionCreators = require('../../actions/MediasActionCreators');
 var Omdb = require('./Omdb');
 
-module.exports = {
+var Facebook = {
+  initialized: false,
+
+  initialize: function Facebook__initialize(id) {
+    if (Facebook.initialized || !id) {
+      return;
+    }
+
+    Facebook.initialized = true;
+
+    Facebook.friendsFor(id).done(function(response){
+      var ids = response.map(function(r){ return r.id; });
+      ids.push(id);
+      Facebook.videosFor(ids);
+    });
+  },
+
   friendsFor: function Facebook__friendsFor(id) {
     return new Promise(function(resolve, reject){
       FB.api('/' + id + '/friends', function(response){
@@ -76,3 +92,5 @@ function createVideoResponseHandler(resolve, reject, userId) {
     });
   }
 }
+
+module.exports = Facebook;
