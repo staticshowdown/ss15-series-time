@@ -6,7 +6,7 @@ var FriendList = React.createClass({
   render: function FriendList__render() {
     var i, friends = [], id;
 
-    id = this.state.userInfo.when({
+    id = this.state.userInfo && this.state.userInfo.when({
       pending: function() { return 0; },
       failed: function() { return 0; },
       done: function(data) { return data.id; }

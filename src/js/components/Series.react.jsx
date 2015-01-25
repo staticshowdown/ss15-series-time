@@ -14,7 +14,15 @@ var Series = React.createClass({
     }
 
     return (
-      <div className="series" style={{ backgroundPosition: '50% 50%', backgroundImage: 'url(' + m.omdb.Poster + ')' }}></div>
+      <div className="series" style={{ backgroundPosition: '50% 50%', backgroundImage: 'url(' + m.omdb.Poster + ')' }}>
+        <div className="series__overlay">
+          <div className="series__controls">
+            <img src="" />
+            <img src="" />
+            <img src="" />
+          </div>
+        </div>
+      </div>
     );
   }
 });
