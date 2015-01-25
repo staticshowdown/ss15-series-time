@@ -42,13 +42,10 @@ var Dashboard = React.createClass({
         <div className="dashboard__content">
           <UserLikes />
           <FriendsLikes />
-          <FriendList />
-          <button type="button" onClick={this._temp}>Load friends</button>
+          <button type="button" onClick={this._temp}>Load data</button>
         </div>
       </div>
     );
-    //<FriendsWatching />
-    //<button type="button" onClick={this._unauth}>{text}</button>
   },
 
   _unauth: function Dashboard___unauth(e) {

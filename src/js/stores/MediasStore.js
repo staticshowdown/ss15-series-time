@@ -5,7 +5,7 @@ var Auth = require('../lib/Auth');
 
 var MediasStore = Marty.createStore({
   handlers: {
-    set: MediasConstants.SET
+    setMedias: MediasConstants.SET
   },
 
   getInitialState: function MediasStore__getInitialState() {
@@ -24,18 +24,19 @@ var MediasStore = Marty.createStore({
       });
     }
 
-    return rs || [];
+    return (rs || []).sort(this._sortByLikes);
   },
 
-  get: function MediasStore__get(id) {
+  getMedias: function MediasStore__getMedias(id) {
     if (!id) {
-      return this.state.medias;
+      var m = this.state.medias;
+      return Object.keys(m).map(function(k){ return m[k]; }).sort(this._sortByLikes);
     }
 
     return this.state.medias[id];
   },
 
-  set: function MediasStore__set(facebook, omdb, userId) {
+  setMedias: function MediasStore__setMedias(facebook, omdb, userId) {
     this.state.medias = (this.state.medias || {});
     this.state.userMediaMap = (this.state.userMediaMap || {});
     this.state.userMediaMap[userId] = (this.state.userMediaMap[userId] || []);
@@ -49,6 +50,10 @@ var MediasStore = Marty.createStore({
     this.state.medias[facebook.id] = facebook;
 
     this.hasChanged();
+  },
+
+  _sortByLikes: function MediasStore___sortByLikes(a, b) {
+    return b.likes - a.likes;
   }
 });
 

@@ -5,7 +5,7 @@ var MediasStateMixin = Marty.createStateMixin({
   listenTo: MediasStore,
   getState: function () {
     return {
-      medias: MediasStore.get(),
+      medias: MediasStore.getMedias(),
     };
   }
 });

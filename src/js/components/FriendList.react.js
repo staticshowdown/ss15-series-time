@@ -21,7 +21,7 @@ var FriendList = React.createClass({
     }
 
     if (friends.length === 0) {
-      return <div><small>No friends.</small></div>
+      return null;
     }
 
     return (
