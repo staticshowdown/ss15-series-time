@@ -10,6 +10,7 @@ require('../../css/Login');
 
 var Login = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
+
   statics: {
     willTransitionTo: function (transition) {
       if (Auth.user) {
@@ -34,6 +35,24 @@ var Login = React.createClass({
   },
 
   render: function Login__render() {
+    var user = Auth.user;
+
+    var button;
+    if (user === false) {
+      button = (
+        <div className="login__button" style={{cursor:'wait'}}>
+          Preparing your popcorn...
+        </div>
+      );
+    } else {
+      button = (
+        <div onClick={ this._auth } className="login__button">
+          Login with&nbsp;
+          <span className="login__button__facebook">Facebook</span>
+        </div>
+      );
+    }
+
     return (
       <div className="login">
         <div className="login__box">
@@ -41,10 +60,7 @@ var Login = React.createClass({
             Follow your favorite series and check what your friends have been watching.
           </div>
 
-          <div onClick={ this._auth } className="login__button">
-            Login with&nbsp;
-            <span className="login__button__facebook">Facebook</span>
-          </div>
+          {button}
         </div>
       </div>
     );

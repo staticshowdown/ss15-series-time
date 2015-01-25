@@ -27,8 +27,10 @@ FB.init({
 FB.getLoginStatus(function(response){
   if (response.status === 'connected') {
     Auth.user = response.authResponse;
-    UsersActionCreators.auth(Auth.user);
+  } else {
+    Auth.user = null;
   }
+  UsersActionCreators.auth(Auth.user);
 });
 
 Router.run(routes, function (Handler) {

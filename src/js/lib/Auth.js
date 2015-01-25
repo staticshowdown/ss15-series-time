@@ -9,7 +9,7 @@ var Auth = {
     'user_actions.video',
   ],
 
-  user: null,
+  user: false,
 
   logout: function Auth__logout() {
     return new Promise(function(resolve, reject){
