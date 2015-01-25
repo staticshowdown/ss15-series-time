@@ -8,6 +8,10 @@ var Facebook = require('../lib/api/Facebook');
 var FriendList = require('./FriendList.react');
 
 var UserInfo = require('./UserInfo.react');
+var UserLikes = require('./UserLikes.react');
+var FriendsLikes = require('./FriendsLikes.react');
+
+require('../../css/Dashboard');
 
 var Dashboard = React.createClass({
   mixins: [ UsersStateMixin, Navigation ],
@@ -33,10 +37,13 @@ var Dashboard = React.createClass({
     return (
       <div className="dashboard">
         <UserInfo />
-        <FriendList />
+        <div className="dashboard__content">
+          <UserLikes />
+          <FriendsLikes />
+          <FriendList />
+        </div>
       </div>
     );
-    //<UserLikes />
     //<FriendsWatching />
     //<button type="button" onClick={this._unauth}>{text}</button>
     //<button type="button" onClick={this._temp}>Load friends</button>
