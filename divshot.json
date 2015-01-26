@@ -3,6 +3,14 @@
   "root": "./",
   "clean_urls": true,
   "error_page": "error.html",
+  "proxy": {
+    "imdb": {
+      "origin": "http://ia.media-imdb.com/",
+      "headers": {},
+      "cookies": false,
+      "timeout": 86400
+    }
+  },
   "exclude": [
     "node_modules",
     "src",

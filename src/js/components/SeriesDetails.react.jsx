@@ -98,12 +98,15 @@ var SeriesDetails =  React.createClass({
       return <FriendWatcher id={id} />;
     });
 
+    var img = (m.omdb.Poster || "")
+    img = '/__/proxy/imdb' + img.replace(/^https?:\/\/[^/]+/i, '');
+
     return (
       <div className="details">
         <Header name={ m.name } extra={{
           'Friends Watching': userCount,
         }}>
-          <img src={ m.omdb.Poster } className="details__picture" />
+          <img src={ img } className="details__picture" />
         </Header>
 
         <div className="details__content">

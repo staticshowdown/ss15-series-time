@@ -11,10 +11,13 @@ var Series = React.createClass({
   render: function () {
     var m = this.props.media;
 
+    var img = (m.omdb.Poster || "")
+    img = '/__/proxy/imdb' + img.replace(/^https?:\/\/[^/]+/i, '');
+
     return (
       <div
         className="series"
-        style={{ backgroundPosition: '50% 50%', backgroundImage: 'url(' + m.omdb.Poster + ')' }}
+        style={{ backgroundPosition: '50% 50%', backgroundImage: 'url(' + img + ')' }}
         title={ m.name }
         onClick={this.onClick}>
         <div className="series__overlay">
